@@ -50,9 +50,9 @@ int open_file(char* input, char* name, FILE* *inputfile, FILE* *outputfile)
     char cwd[256];
     getcwd(cwd, sizeof(cwd));
     printf("%s\n", cwd);
-    char* ftp = concat(4, cwd, "\\", input, ".txt"); //Path to input file
+    char* ftp = concat(4, cwd, "/", input, ".txt"); //Path to input file
     *inputfile = fopen(ftp, "r");
-    char* outfile = concat(4, cwd, "\\Report_", name, ".txt");
+    char* outfile = concat(4, cwd, "/Report_", name, ".txt");
     *outputfile = fopen(outfile, "w");
     free(outfile);
     return 0;
@@ -105,20 +105,25 @@ int parsing(FILE* inputfile, FILE* outputfile, char *q_seq, char *d_seq)
 	{
 		if (strncmp(line, "Q:", 2) == 0)
 		{
+      printf("EIIIIII VRIKA TO Q\n" );
     		sscanf(line, "Q:\t%[^\n]", line);
             fprintf(outputfile, "Q:\t%s\n", line);
 			strcpy(q_seq, line);
+      printf("EIII TO VRIKA TO Q?????\n" );
 			found_q = 1;
 		}
 		else if (strncmp(line, "D:", 2) == 0)
 		{
+      printf("EIIIIII VRIKA TO D\n" );
 			sscanf(line, "D:\t%[^\n]", line);
             fprintf(outputfile, "D:\t%s\n", line);
 			strcpy(d_seq, line);
+      printf("EIII TO VRIKA TO D?????\n" );
 			found_q = 0;
 		}
 		else if (strncmp(line, "\t", 1) == 0 || strncmp(line, "  ", 2) == 0)
 		{
+      printf("EEEEIIII\n" );
 			fprintf(outputfile, "%s", line);
 			sscanf(line, "\t%[^\n]", line);
 
@@ -133,8 +138,8 @@ int main(int argc, char* argv[])
 {
     char* name ="nametest6";
     char* input = "D6";
-    char* q_seq;
-    char* d_seq;
+    //char* q_seq;
+    //char* d_seq;
     int match = 3;
     int mismatch = -1;
     int gap = -1;
@@ -148,10 +153,23 @@ int main(int argc, char* argv[])
     open_file(input,name,&inputfile,&outputfile);
 
     parsingInfo(inputfile, &pair_size, &q_size, &q_size_min, &d_size);
-    parsing(inputfile, outputfile, &q_seq, &d_seq);
 
-    char* q = malloc(sizeof(char[(int)q_size+1]));
-    char* d = malloc(sizeof(char[(int)d_size+1]));
+
+    char* q_seq = malloc(sizeof(char[(int)q_size+1]));
+    char* d_seq = malloc(sizeof(char[(int)d_size+1]));
+
+        parsing(inputfile, outputfile, q_seq, d_seq);
+
+   printf("EKTYPWSE TO:\n");
+   printf("%s", q_seq);
+   printf("\n");
+printf("\n");
+printf("\n");
+printf("\n");
+   printf("EKTYPWSE TO:\n");
+   printf("%s", d_seq);
+   printf("\n");
+
 
     fclose(outputfile);
     fclose(inputfile);
